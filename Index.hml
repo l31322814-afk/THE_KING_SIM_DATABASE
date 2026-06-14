@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEGEND KING Sim DataBase</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        :root {
+            --primary: #ffff00; /* VIP Yellow */
+            --accent: #ff0000;  /* Cyber Red */
+            --bg-main: #070708;
+            --panel-bg: rgba(16, 16, 20, 0.9);
+            --border: #ffff00;
+            --text-glow: 0 0 12px rgba(255, 255, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        /* Matrix Rain Canvas */
+        #matrixBg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.12;
+        }
+
+        /* Fully Automatic WhatsApp Lock Overlay */
+        #lockScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(4, 4, 6, 0.98);
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 4px solid var(--accent);
+        }
+
+        .lock-card {
+            background: #0d0d11;
+            padding: 40px;
+            border-radius: 4px;
+            border: 2px solid var(--primary);
+            text-align: center;
+            max-width: 420px;
+            box-shadow: 0 0 25px rgba(255, 255, 0, 0.2);
+        }
+
+        .lock-card h2 {
+            font-size: 26px;
+            color: var(--accent);
+            margin: 15px 0 10px;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+        }
+
+        .lock-card p {
+            color: #ccc;
+            font-size: 14px;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            letter-spacing: 1px;
+        }
+
+        .btn-unlock {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 14px 28px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            box-shadow: var(--text-glow);
+        }
+
+        .btn-unlock:hover {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 30px var(--primary);
+        }
+
+        /* Next-Gen Ultra Unique VIP Cyber Banner Layout */
+        .banner-container {
+            max-width: 750px;
+            margin: 35px auto 15px;
+            text-align: center;
+            border: 3px double var(--accent);
+            background: linear-gradient(135deg, rgba(25, 5, 5, 0.85) 0%, rgba(10, 10, 14, 0.9) 100%);
+            padding: 35px 25px;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4), inset 0 0 15px rgba(255, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner-container::before {
+            content: '▲ CRITICAL CORE ACCESS ▲';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: #fff;
+            padding: 2px 15px;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+
+        .banner-title {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.8), 0 0 2px #fff;
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            animation: pulse 2.5s infinite;
+        }
+
+        .banner-subtitle {
+            color: #ffffff;
+            font-size: 12px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .educational-warning {
+            color: #ffaa00;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            border: 1px dashed rgba(255, 170, 0, 0.5);
+            padding: 8px 16px;
+            background: rgba(255, 170, 0, 0.05);
+            display: inline-block;
+        }
+
+        /* Hacker Search Console Box */
+        .console-box {
+            max-width: 650px;
+            margin: 25px auto;
+            background: var(--panel-bg);
+            border: 2px solid var(--border);
+            padding: 20px;
+            box-shadow: var(--text-glow);
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+        }
+
+        .console-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 0, 0.3);
+            padding: 15px 15px 15px 45px;
+            color: #ffffff;
+            font-size: 16px;
+            outline: none;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+
+        .console-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 8px rgba(255, 255, 0, 0.3);
+        }
+
+        .btn-search-details {
+            width: 100%;
+            background: var(--primary);
+            color: #000000;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .btn-search-details:hover {
+            background: #ffffff;
+            box-shadow: 0 0 15px #ffffff;
+        }
+
+        /* Console Output Streams */
+        #outputArea {
+            max-width: 650px;
+            margin: 0 auto 40px;
+        }
+
+        .terminal-loader {
+            background: var(--panel-bg);
+            border: 1px dashed #00ff00;
+            padding: 25px;
+            color: #00ff00;
+            font-size: 13px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .graph-line {
+            white-space: pre;
+            color: #00dd00;
+            font-weight: bold;
+            margin: 5px 0;
+            animation: flux 0.6s infinite alternate;
+        }
+
+        .data-card {
+            background: var(--panel-bg);
+            border: 2px solid var(--border);
+            padding: 20px;
+            box-shadow: var(--text-glow);
+            margin-bottom: 20px;
+        }
+
+        .record-header {
+            background: rgba(255, 255, 0, 0.1);
+            padding: 8px 12px;
+            font-weight: bold;
+            border-left: 4px solid var(--primary);
+            margin-bottom: 15px;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .info-row {
+            padding: 10px 0;
+            border-bottom: 1px dashed rgba(255, 255, 0, 0.15);
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+
+        .label { color: #ffffa0; font-weight: bold; }
+        .value { color: #ffffff; font-weight: bold; text-shadow: 0 0 3px rgba(255,255,255,0.2); }
+
+        /* Integrated Maps Module */
+        .map-section {
+            border: 2px solid var(--border);
+            background: var(--panel-bg);
+            padding: 15px;
+            margin-top: 20px;
+            box-shadow: var(--text-glow);
+        }
+
+        .map-title {
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            color: var(--primary);
+            text-transform: uppercase;
+        }
+
+        .map-wrapper {
+            width: 100%;
+            height: 280px;
+            border: 1px solid rgba(255, 255, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .not-found {
+            text-align: center;
+            color: var(--accent);
+            background: rgba(30, 5, 5, 0.9);
+            padding: 25px;
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.3);
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* Required Historical Database Notice Box */
+        .database-notice-box {
+            max-width: 650px;
+            margin: 20px auto;
+            border: 1px solid var(--primary);
+            background: rgba(255, 255, 0, 0.04);
+            padding: 15px;
+            text-align: center;
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: inset 0 0 10px rgba(255, 255, 0, 0.05);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: #555;
+            font-weight: bold;
+            border-top: 1px solid rgba(255, 255, 0, 0.05);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); text-shadow: 0 0 20px rgba(255,0,0,0.8); }
+            50% { transform: scale(1.03); text-shadow: 0 0 30px rgba(255,0,0,1), 0 0 10px rgba(255,255,0,0.5); }
+            100% { transform: scale(1); text-shadow: 0 0 20px rgba(255,0,0,0.8); }
+        }
+
+        @keyframes flux {
+            0% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <canvas id="matrixBg"></canvas>
+
+    <div id="lockScreen">
+        <div class="lock-card">
+            <i class="fas fa-lock" style="font-size: 55px; color: var(--accent); text-shadow: 0 0 15px rgba(255,0,0,0.6);"></i>
+            <h2>TOOL LOCKED</h2>
+            <p>Follow my WhatsApp channel to unlock this tool.</p>
+            <button id="gateTrigger" class="btn-unlock">
+                <i class="fab fa-whatsapp"></i> Channel Follow
+            </button>
+        </div>
+    </div>
+
+    <div class="banner-container">
+        <div class="banner-title"><i class="fas fa-terminal"></i> LEGEND KING Sim DataBase</div>
+        <div class="banner-subtitle">Premium DataBase Tool</div>
+        <div class="educational-warning">
+            <i class="fas fa-exclamation-triangle"></i> This Tool is only for Educational Purpose
+        </div>
+    </div>
+
+    <div class="console-box">
+        <div class="input-group">
+            <i class="fas fa-search"></i>
+            <input type="text" id="targetInput" class="console-input" placeholder="Enter Mobile Number (3xxxxxxxxx) or CNIC">
+        </div>
+        <button id="searchTrigger" class="btn-search-details">Search Details</button>
+    </div>
+
+    <div id="outputArea"></div>
+
+    <div class="database-notice-box">
+        <i class="fas fa-info-circle"></i> NOTE: As website me only 2023 tk ka NMBER ka data majood hy
+    </div>
+
+    <footer>
+        Developer: LEGEND KING HACKER 🦅
+    </footer>
+
+    <script>
+        // Matrix Background Engine
+        const canvas = document.getElementById('matrixBg');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%&*+";
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const rainDrops = Array.from({ length: columns }).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(7, 7, 8, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) rainDrops[i] = 0;
+                rainDrops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 35);
+
+        // Security Core Execution Node
+        const _0x_routes = {
+            wa: "https://whatsapp.com/channel/0029VbCXi879sBIDA6IIEH1Y",
+            api1: "https://famofc.site/api/database.php?number=",
+            api2: "https://wasifali-sim-info.netlify.app/api/search?phone="
+        };
+
+        // Gateway Handler Node (Fixed Pop-up blocker bypass)
+        function handleGatewayUnlock() {
+            window.open(_0x_routes.wa, '_blank');
+            $('#lockScreen').fadeOut(800);
+        }
+
+        // Heavy Advanced Real Hacking Type Graph Engine Replacement
+        function generateHackingGraph() {
+            const lines = [
+                " [~] INITIALIZING GULL_KHAN Sim Database v1.0...",
+                " [⚙️] CONFIGURING PROXY ROUTER... [DONE]",
+                " [🔑] BRUTEFORCING INTERNAL HASH MEMORY BLOCKS...",
+                " -----------------------------------------------------------",
+                " >> root@legend_king_terminal:~# exploit --target multi-node",
+                " [*] STATUS: [CONNECTED] -> ATTACHING REVERSE SHELL BUFFER",
+                " [+] ALLOCATING TRANSLATION Setalite Map VIA EX-API INTERFACE",
+                " [!] INJECTING MEMORY PAYLOAD AT ADDR: 0x7FFF5BC008A",
+                " [~] EXTRACTING BINARY STREAM ROWS FROM BACKEND HOSTS...",
+                " -----------------------------------------------------------",
+                " 📡 SYNCING SATELLITE RADAR BEACON LAYER... 100%",
+                " 🔓 PIPELINE STATE UNLOCKED -> RENDERING DATASHEETS..."
+            ];
+            let stream = '<div class="terminal-loader" style="border: 1px dashed #ffff00; color: #ffff00;">';
+            stream += '<div style="margin-bottom:8px; color:#ff0000; font-weight:bold;"><i class="fas fa-shield-virus fa-spin"></i> LEGEND KING LIVE DATABASE BYPASS...</div>';
+            stream += '<div class="graph-line" style="color:#ff0000;">▲▼▲ ▉▊▋▌▍▎▏ CORE STACK DECRYPTION AGENT ON-LINE ▉▊▋▌▍▎▏ ▲▼▲</div>';
+            lines.forEach(l => stream += `<div>${l}</div>`);
+            stream += '<div class="graph-line" style="color:#ffff00;">█████████████████████████████████████████████████████████████</div>';
+            stream += '</div>';
+            return stream;
+        }
+
+        async function executeSystemScan() {
+            const q = $('#targetInput').val().trim();
+            if(!q) return alert("Please enter a phone number or CNIC to continue!");
+
+            $('#outputArea').html(generateHackingGraph()).fadeIn();
+            await new Promise(res => setTimeout(res, 1400));
+
+            try {
+                const res = await fetch(_0x_routes.api1 + q);
+                const json = await res.json();
+
+                let records = [];
+                if (json.success && json.data && json.data.records) {
+                    records = json.data.records;
+                } else if (json.records) {
+                    records = json.records;
+                } else if (Array.isArray(json)) {
+                    records = json;
+                } else if (json && (json.name || json.Name || json.cnic || json.CNIC)) {
+                    records = [json];
+                }
+
+                if (records && records.length > 0) {
+                    let combinedHtml = "";
+                    let targetAddressForMap = "Pakistan";
+
+                    records.forEach((record, index) => {
+                        const name = record.full_name || record.Name || record.NAME || 'N/A';
+                        const phone = record.phone || record.Mobile || record.NUMBER || q;
+                        const cnic = record.cnic || record.CNIC || 'N/A';
+                        const currentAddress = record.address || record.Address || "Pakistan";
+                        
+                        if (index === 0 && currentAddress !== "Pakistan") {
+                            targetAddressForMap = currentAddress;
+                        }
+
+                        combinedHtml += `
+                            <div class="data-card">
+                                <div class="record-header"><i class="fas fa-database"></i> Leak Database RECORD #${index + 1}</div>
+                                <div class="info-row"><span class="label">FULL NAME:</span> <span class="value">${name}</span></div>
+                                <div class="info-row"><span class="label">PHONE NUMBER:</span> <span class="value">${phone}</span></div>
+                                <div class="info-row"><span class="label">CNIC NO:</span> <span class="value">${cnic}</span></div>
+                                <div class="info-row"><span class="label">ADDRESS RESIDENCE:</span> <span class="value">${currentAddress}</span></div>
+                            </div>
+                        `;
+                    });
+
+                    const sanitizedLocation = encodeURIComponent(targetAddressForMap);
+                    const mapUrl = `https://maps.google.com/maps?q=${sanitizedLocation}&t=k&z=14&output=embed`;
+
+                    combinedHtml += `
+                        <div class="map-section">
+                            <div class="map-title"><i class="fas fa-map-marked-alt"></i> LIVE TRACKING:</div>
+                            <div class="map-wrapper">
+                                <iframe width="100%" height="100%" frameborder="0" style="border:0;" src="${mapUrl}" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    `;
+                    $('#outputArea').html(combinedHtml).fadeIn();
+
+                } else {
+                    try {
+                        const altResp = await fetch(_0x_routes.api2 + q);
+                        const altJson = await altResp.json();
+                        let altRecords = altJson.records || (Array.isArray(altJson) ? altJson : []);
+                        
+                        if (altRecords && altRecords.length > 0) {
+                            let altHtml = "";
+                            let mapLoc = "Pakistan";
+                            
+                            altRecords.forEach((r, idx) => {
+                                altHtml += `
+                                    <div class="data-card">
+                                        <div class="record-header"><i class="fas fa-database"></i> Leak RECORD #${idx + 1}</div>
+                                        <div class="info-row"><span class="label">FULL NAME:</span> <span class="value">${r.Name || r.full_name || 'N/A'}</span></div>
+                                        <div class="info-row"><span class="label">PHONE NUMBER:</span> <span class="value">${r.Mobile || r.phone || q}</span></div>
+                                        <div class="info-row"><span class="label">CNIC NO:</span> <span class="value">${r.CNIC || r.cnic || 'N/A'}</span></div>
+                                        <div class="info-row"><span class="label">ADDRESS RESIDENCE:</span> <span class="value">${r.Address || r.address || 'Pakistan'}</span></div>
+                                    </div>
+                                `;
+                                if(idx === 0) mapLoc = r.Address || r.address || "Pakistan";
+                            });
+
+                            altHtml += `
+                                <div class="map-section">
+                                    <div class="map-title"><i class="fas fa-map-marked-alt"></i> LIVE TRACKING:</div>
+                                    <div class="map-wrapper">
+                                        <iframe width="100%" height="100%" frameborder="0" style="border:0;" src="https://maps.google.com/maps?q=${encodeURIComponent(mapLoc)}&t=k&z=14&output=embed" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            `;
+                            $('#outputArea').html(altHtml).fadeIn();
+                        } else {
+                            $('#outputArea').html('<div class="not-found"><i class="fas fa-window-close"></i> ATTENTION: DATA NOT FOUND</div>');
+                        }
+                    } catch (innerErr) {
+                        $('#outputArea').html('<div class="not-found"><i class="fas fa-window-close"></i> ATTENTION: DATA NOT FOUND</div>');
+                    }
+                }
+            } catch (err) {
+                $('#outputArea').html('<div class="not-found"><i class="fas fa-exclamation-triangle"></i> ERROR: PACKET DROPPED OR TIMEOUT FROM CENTRAL NODE</div>');
+            }
+        }
+
+        // Event Handling Binding
+        $(document).ready(function() {
+            $('#gateTrigger').on('click', function() {
+                handleGatewayUnlock();
+            });
+            $('#searchTrigger').on('click', function() {
+                executeSystemScan();
+            });
+        });
+
+        // Anti-F12 Console Lock Engine
+        document.addEventListener('keydown', function(e) {
+            if (e.keyCode === 123) { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.keyCode === 85) { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.keyCode === 83) { e.preventDefault(); return false; }
+        });
+    </script>
+</body>
+</html>
